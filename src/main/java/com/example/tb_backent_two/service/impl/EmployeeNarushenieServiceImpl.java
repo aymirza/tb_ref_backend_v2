@@ -4,43 +4,102 @@ import com.example.tb_backent_two.model.EmployeeNaruhsenie;
 import com.example.tb_backent_two.repository.EmployeeNarushenieRepository;
 import com.example.tb_backent_two.service.EmployeeNarushenieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+import javax.management.RuntimeMBeanException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService {
+
     @Autowired
     private EmployeeNarushenieRepository employeeNarushenieRepository;
 
-    private final String Path = "C:/ayka/safety_project/tb_backent_two/photos";
 
+
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    @PostConstruct
+    public void init() {
+        try {
+            Files.createDirectories(Paths.get(uploadPath));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not create upload folder");
+        }
+    }
 
     @Override
     public EmployeeNaruhsenie saveEmplNar(String lastname, String firstname,
                                           String uchastka, String tsex_uchastka,
                                           String pravila, String narushenie,
                                           MultipartFile file) throws IOException {
-        String fullPath = Path+file.getOriginalFilename();
-        EmployeeNaruhsenie employeeNaruhsenie = new EmployeeNaruhsenie();
-        employeeNaruhsenie.setLastname(lastname);
-        employeeNaruhsenie.setFirstname(firstname);
-        employeeNaruhsenie.setUchastka(uchastka);
-        employeeNaruhsenie.setTsex_uchastka(tsex_uchastka);
-        employeeNaruhsenie.setPravila(pravila);
-        employeeNaruhsenie.setImg_url(fullPath);
-        employeeNaruhsenie.setImg_fullname(file.getOriginalFilename());
-        employeeNaruhsenie.setImg_type(file.getContentType());
-        file.transferTo(new File(fullPath));
-        return employeeNarushenieRepository.save(employeeNaruhsenie);
+        try {
+            Path root = Paths.get(uploadPath);
+            if (!Files.exists(root)) {
+                init();
+            }
+            Files.copy(file.getInputStream(), root.resolve(file.getOriginalFilename()));
+            String fullPath = uploadPath + file.getOriginalFilename();
+            EmployeeNaruhsenie employeeNaruhsenie = new EmployeeNaruhsenie();
+            employeeNaruhsenie.setLastname(lastname);
+            employeeNaruhsenie.setFirstname(firstname);
+            employeeNaruhsenie.setUchastka(uchastka);
+            employeeNaruhsenie.setTsex_uchastka(tsex_uchastka);
+            employeeNaruhsenie.setPravila(pravila);
+            employeeNaruhsenie.setNarushenie(narushenie);
+            employeeNaruhsenie.setImg_url(fullPath);
+            employeeNaruhsenie.setImg_fullname(file.getOriginalFilename());
+            employeeNaruhsenie.setImg_type(file.getContentType());
+
+            return employeeNarushenieRepository.save(employeeNaruhsenie);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file,Error: " + e.getMessage());
+        }
     }
 
+    public Resource loadFile(String filename) {
+        try {
+            Path file = Paths.get(uploadPath)
+                    .resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+
     @Override
-    public List<EmployeeNaruhsenie> getAllEmplNar() {
-        return employeeNarushenieRepository.findAll();
+    public List<Path> getAllEmplNar() {
+        try {
+            Path root = Paths.get(uploadPath);
+            if (Files.exists(root)) {
+                return Files.walk(root, 1)
+                        .filter(path -> !path.equals(root))
+                        .collect(Collectors.toList());
+            }
+            return Collections.emptyList();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not list the files");
+        }
     }
 
     @Override
