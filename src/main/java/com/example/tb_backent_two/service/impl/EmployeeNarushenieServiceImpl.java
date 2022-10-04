@@ -29,7 +29,6 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
     private EmployeeNarushenieRepository employeeNarushenieRepository;
 
 
-
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -71,10 +70,10 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
         }
     }
 
-    public Resource loadFile(String filename) {
+    public Resource loadFile(String img_fullname) {
         try {
             Path file = Paths.get(uploadPath)
-                    .resolve(filename);
+                    .resolve(img_fullname);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -82,6 +81,16 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
                 throw new RuntimeException("Could not the file!");
             }
         } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public EmployeeNaruhsenie loadData(String img_fullname) {
+        try {
+            return employeeNarushenieRepository.getByImg_fullname(img_fullname);
+
+        } catch (Exception e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
@@ -100,6 +109,12 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
         } catch (IOException e) {
             throw new RuntimeException("Could not list the files");
         }
+    }
+
+
+    @Override
+    public List<EmployeeNaruhsenie> getAllEmplN() {
+        return employeeNarushenieRepository.findAll();
     }
 
     @Override

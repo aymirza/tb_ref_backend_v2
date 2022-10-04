@@ -21,7 +21,8 @@ public interface EmployeeNarushenieService {
     ) throws IOException;
 
     List<Path> getAllEmplNar(
-
+    );
+    List<EmployeeNaruhsenie> getAllEmplN(
     );
 
     EmployeeNaruhsenie getById(Long id);
@@ -30,6 +31,7 @@ public interface EmployeeNarushenieService {
 
     void deleteById(Long id);
 
-    Resource loadFile(String filename);
+    Resource loadFile(String img_fullname);
+    EmployeeNaruhsenie loadData(String img_fullname);
 
 }
