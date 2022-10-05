@@ -10,4 +10,5 @@ public class TbBackentTwoApplication {
 		SpringApplication.run(TbBackentTwoApplication.class, args);
 	}
 
+
 }

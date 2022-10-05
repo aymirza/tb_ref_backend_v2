@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class EmployeeNarushenieController {
@@ -26,11 +26,11 @@ public class EmployeeNarushenieController {
     @Autowired
     private EmployeeNarushenieService employeeNarushenieService;
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload")
     public ResponseEntity<?> uploadEmplNar(@RequestParam("lastname") String lastname, @RequestParam("firstname") String firstname,
                                            @RequestParam("uchastka") String uchastka, @RequestParam("tsex_uchastka") String tsex_uchastka,
                                            @RequestParam("pravila") String pravila, @RequestParam("narushenie") String narushenie,
-                                           @RequestParam("file") MultipartFile file) throws IOException {
+                                           @RequestParam(value = "file") MultipartFile file) throws IOException {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(employeeNarushenieService.saveEmplNar(lastname, firstname, uchastka, tsex_uchastka, pravila, narushenie, file));
