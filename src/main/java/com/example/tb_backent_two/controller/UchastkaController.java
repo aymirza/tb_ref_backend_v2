@@ -24,4 +24,8 @@ public class UchastkaController {
     public Uchastka saveUchastka(Uchastka uchastka){
         return uchastkaService.saveUchastka(uchastka);
     }
+    @DeleteMapping("/{id}")
+    public void deleteUchastka(@PathVariable Long id){
+        uchastkaService.deleteByUchastka(id);
+    }
 }

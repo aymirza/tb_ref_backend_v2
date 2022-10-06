@@ -24,6 +24,7 @@ public class EmployeeNaruhsenie {
     private String imgurl;
     private  String imgfullname;
     private  String imgtype;
+    private String predlojenie;
 
 
 }

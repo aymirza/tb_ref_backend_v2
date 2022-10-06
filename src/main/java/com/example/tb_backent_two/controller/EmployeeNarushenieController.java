@@ -30,10 +30,10 @@ public class EmployeeNarushenieController {
     public ResponseEntity<?> uploadEmplNar(@RequestParam("lastname") String lastname, @RequestParam("firstname") String firstname,
                                            @RequestParam("uchastka") String uchastka, @RequestParam("tsex_uchastka") String tsex_uchastka,
                                            @RequestParam("pravila") String pravila, @RequestParam("narushenie") String narushenie,
-                                           @RequestParam(value = "file") MultipartFile file) throws IOException {
+                                           @RequestParam("predlojenie") String predlojenie,@RequestParam(value = "file") MultipartFile file) throws IOException {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(employeeNarushenieService.saveEmplNar(lastname, firstname, uchastka, tsex_uchastka, pravila, narushenie, file));
+                .body(employeeNarushenieService.saveEmplNar(lastname, firstname, uchastka, tsex_uchastka, pravila, narushenie,predlojenie, file));
     }
 
 
@@ -87,6 +87,7 @@ public class EmployeeNarushenieController {
         String narushenie = employeeNaruhsenie1.getNarushenie();
         String imgfullname = employeeNaruhsenie1.getImgfullname();
         String imgtype = employeeNaruhsenie1.getImgtype();
+        String predlojenie = employeeNaruhsenie1.getPredlojenie();
 
         EmplNarushenieDTO emplNarushenieDTO = new EmplNarushenieDTO();
         emplNarushenieDTO.setLastname(lastname);
@@ -99,6 +100,7 @@ public class EmployeeNarushenieController {
                 EmployeeNarushenieController.class, "getImage",imgfullname).build().toString());
         emplNarushenieDTO.setImgfullname(imgfullname);
         emplNarushenieDTO.setImgtype(imgtype);
+        emplNarushenieDTO.setPredlojenie(predlojenie);
 
         return emplNarushenieDTO;
     }

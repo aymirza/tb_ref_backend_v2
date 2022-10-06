@@ -9,6 +9,6 @@ import java.util.List;
 public interface UchastkaService {
     List<Uchastka> getAll();
     Uchastka saveUchastka(Uchastka uchastka);
-
+    void deleteByUchastka(Long id);
 
 }

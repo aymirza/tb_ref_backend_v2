@@ -22,4 +22,9 @@ public class UchastkaServiceImpl implements UchastkaService {
     public Uchastka saveUchastka(Uchastka uchastka) {
         return uchastkaRepository.save(uchastka);
     }
+
+    @Override
+    public void deleteByUchastka(Long id) {
+        uchastkaRepository.deleteById(id);
+    }
 }

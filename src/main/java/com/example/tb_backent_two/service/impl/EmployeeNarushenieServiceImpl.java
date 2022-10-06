@@ -45,7 +45,7 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
     public EmployeeNaruhsenie saveEmplNar(String lastname, String firstname,
                                           String uchastka, String tsex_uchastka,
                                           String pravila, String narushenie,
-                                          MultipartFile file) throws IOException {
+                                          String predlojenie, MultipartFile file) throws IOException {
         try {
             Path root = Paths.get(uploadPath);
             if (!Files.exists(root)) {
@@ -63,6 +63,7 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
             employeeNaruhsenie.setImgurl(fullPath);
             employeeNaruhsenie.setImgfullname(file.getOriginalFilename());
             employeeNaruhsenie.setImgtype(file.getContentType());
+            employeeNaruhsenie.setPredlojenie(predlojenie);
 
             return employeeNarushenieRepository.save(employeeNaruhsenie);
         } catch (Exception e) {
