@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeNarushenieRepository extends JpaRepository<EmployeeNaruhsenie, Long> {
-    @Query("select empln from EmployeeNaruhsenie empln where empln.img_fullname=?1")
-    EmployeeNaruhsenie getByImg_fullname(String img_fullname);
+
+    @Query("select empln from EmployeeNaruhsenie empln where empln.imgfullname=?1")
+    EmployeeNaruhsenie getByImgfullname(String imgfullname);
 }

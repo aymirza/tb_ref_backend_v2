@@ -31,7 +31,7 @@ public interface EmployeeNarushenieService {
 
     void deleteById(Long id);
 
-    Resource loadFile(String img_fullname);
-    EmployeeNaruhsenie loadData(String img_fullname);
+    Resource loadFile(String imgfullname);
+    EmployeeNaruhsenie loadData(String imgfullname);
 
 }

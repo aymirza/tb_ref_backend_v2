@@ -26,7 +26,7 @@ public class EmployeeNarushenieController {
     @Autowired
     private EmployeeNarushenieService employeeNarushenieService;
 
-    @PostMapping(value = "/upload")
+    @PostMapping(value = "/upload",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> uploadEmplNar(@RequestParam("lastname") String lastname, @RequestParam("firstname") String firstname,
                                            @RequestParam("uchastka") String uchastka, @RequestParam("tsex_uchastka") String tsex_uchastka,
                                            @RequestParam("pravila") String pravila, @RequestParam("narushenie") String narushenie,
@@ -52,15 +52,15 @@ public class EmployeeNarushenieController {
         EmployeeNaruhsenie employeeNaruhsenie = new EmployeeNaruhsenie();
         String filename = path.getFileName().toString();
 
-        employeeNaruhsenie.setImg_fullname(filename);
-        employeeNaruhsenie.setImg_url(MvcUriComponentsBuilder.fromMethodName(
+        employeeNaruhsenie.setImgfullname(filename);
+        employeeNaruhsenie.setImgurl(MvcUriComponentsBuilder.fromMethodName(
                         EmployeeNarushenieController.class,
                         "getImage",
                         filename)
                 .build()
                 .toString());
         try {
-            employeeNaruhsenie.setImg_type(Files.probeContentType(path));
+            employeeNaruhsenie.setImgtype(Files.probeContentType(path));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error: " + e.getMessage());
@@ -72,7 +72,7 @@ public class EmployeeNarushenieController {
         EmployeeNaruhsenie employeeNaruhsenie = new EmployeeNaruhsenie();
         String filename = path.getFileName().toString();
 
-        employeeNaruhsenie.setImg_url(MvcUriComponentsBuilder.fromMethodName(
+        employeeNaruhsenie.setImgurl(MvcUriComponentsBuilder.fromMethodName(
                         EmployeeNarushenieController.class,
                         "getAllData",
                         filename)
@@ -85,9 +85,8 @@ public class EmployeeNarushenieController {
         String tsex_uchastka = employeeNaruhsenie1.getTsex_uchastka();
         String pravila = employeeNaruhsenie1.getPravila();
         String narushenie = employeeNaruhsenie1.getNarushenie();
-        String img_url = employeeNaruhsenie1.getImg_url();
-        String img_fullname = employeeNaruhsenie1.getImg_fullname();
-        String img_type = employeeNaruhsenie1.getImg_type();
+        String imgfullname = employeeNaruhsenie1.getImgfullname();
+        String imgtype = employeeNaruhsenie1.getImgtype();
 
         EmplNarushenieDTO emplNarushenieDTO = new EmplNarushenieDTO();
         emplNarushenieDTO.setLastname(lastname);
@@ -96,19 +95,19 @@ public class EmployeeNarushenieController {
         emplNarushenieDTO.setTsex_uchastka(tsex_uchastka);
         emplNarushenieDTO.setPravila(pravila);
         emplNarushenieDTO.setNarushenie(narushenie);
-        emplNarushenieDTO.setImg_url(MvcUriComponentsBuilder.fromMethodName(
-                EmployeeNarushenieController.class, "getImage",img_fullname).build().toString());
-        emplNarushenieDTO.setImg_fullname(img_fullname);
-        emplNarushenieDTO.setImg_type(img_type);
+        emplNarushenieDTO.setImgurl(MvcUriComponentsBuilder.fromMethodName(
+                EmployeeNarushenieController.class, "getImage",imgfullname).build().toString());
+        emplNarushenieDTO.setImgfullname(imgfullname);
+        emplNarushenieDTO.setImgtype(imgtype);
 
         return emplNarushenieDTO;
     }
 
 
-    @GetMapping(value = "{img_fullname:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "{imgfullname:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ResponseEntity<?> getImage(@PathVariable String img_fullname) {
-        Resource file = employeeNarushenieService.loadFile(img_fullname);
+    public ResponseEntity<?> getImage(@PathVariable String imgfullname) {
+        Resource file = employeeNarushenieService.loadFile(imgfullname);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(file);
@@ -116,14 +115,16 @@ public class EmployeeNarushenieController {
 
     @GetMapping(value = "/file/{img_fullname:.+}")
     @ResponseBody
-    public ResponseEntity<?> getAllData(@PathVariable String img_fullname) {
-        EmployeeNaruhsenie file = employeeNarushenieService.loadData(img_fullname);
+    public ResponseEntity<?> getAllData(@PathVariable String imgfullname) {
+        EmployeeNaruhsenie file = employeeNarushenieService.loadData(imgfullname);
         EmployeeNaruhsenie employeeNaruhsenie = new EmployeeNaruhsenie();
         employeeNaruhsenie.setLastname(file.getLastname());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(employeeNaruhsenie);
     }
+
+
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllEmplN() {

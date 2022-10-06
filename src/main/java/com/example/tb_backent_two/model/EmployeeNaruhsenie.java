@@ -21,9 +21,9 @@ public class EmployeeNaruhsenie {
     private String tsex_uchastka;
     private String pravila;
     private String narushenie;
-    private String img_url;
-    private  String img_fullname;
-    private  String img_type;
+    private String imgurl;
+    private  String imgfullname;
+    private  String imgtype;
 
 
 }

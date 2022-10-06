@@ -60,9 +60,9 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
             employeeNaruhsenie.setTsex_uchastka(tsex_uchastka);
             employeeNaruhsenie.setPravila(pravila);
             employeeNaruhsenie.setNarushenie(narushenie);
-            employeeNaruhsenie.setImg_url(fullPath);
-            employeeNaruhsenie.setImg_fullname(file.getOriginalFilename());
-            employeeNaruhsenie.setImg_type(file.getContentType());
+            employeeNaruhsenie.setImgurl(fullPath);
+            employeeNaruhsenie.setImgfullname(file.getOriginalFilename());
+            employeeNaruhsenie.setImgtype(file.getContentType());
 
             return employeeNarushenieRepository.save(employeeNaruhsenie);
         } catch (Exception e) {
@@ -70,10 +70,10 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
         }
     }
 
-    public Resource loadFile(String img_fullname) {
+    public Resource loadFile(String imgfullname) {
         try {
             Path file = Paths.get(uploadPath)
-                    .resolve(img_fullname);
+                    .resolve(imgfullname);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -86,9 +86,9 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
     }
 
     @Override
-    public EmployeeNaruhsenie loadData(String img_fullname) {
+    public EmployeeNaruhsenie loadData(String imgfullname) {
         try {
-            return employeeNarushenieRepository.getByImg_fullname(img_fullname);
+            return employeeNarushenieRepository.getByImgfullname(imgfullname);
 
         } catch (Exception e) {
             throw new RuntimeException("Error: " + e.getMessage());
