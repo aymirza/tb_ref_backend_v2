@@ -27,4 +27,9 @@ public class UchastkaServiceImpl implements UchastkaService {
     public void deleteByUchastka(Long id) {
         uchastkaRepository.deleteById(id);
     }
+
+    @Override
+    public List<Uchastka> findByName(String name) {
+        return uchastkaRepository.findByName(name);
+    }
 }

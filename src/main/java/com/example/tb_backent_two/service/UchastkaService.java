@@ -11,4 +11,6 @@ public interface UchastkaService {
     Uchastka saveUchastka(Uchastka uchastka);
     void deleteByUchastka(Long id);
 
+    List<Uchastka> findByName(String name);
+
 }
