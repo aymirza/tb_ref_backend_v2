@@ -1,25 +1,27 @@
 package com.example.tb_backent_two.service.impl;
 
+import com.example.tb_backent_two.model.EmplNarUchastkaChartDTO;
 import com.example.tb_backent_two.model.EmployeeNaruhsenie;
+import com.example.tb_backent_two.repository.EmplUchastkaRepository;
 import com.example.tb_backent_two.repository.EmployeeNarushenieRepository;
 import com.example.tb_backent_two.service.EmployeeNarushenieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import javax.management.RuntimeMBeanException;
-import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
+import java.sql.ResultSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,8 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
 
     @Autowired
     private EmployeeNarushenieRepository employeeNarushenieRepository;
+    @Autowired
+    private EmplUchastkaRepository emplUchastkaRepository;
 
 
     @Value("${upload.path}")
@@ -98,6 +102,7 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
     }
 
 
+
     @Override
     public List<Path> getAllEmplNar() {
         try {
@@ -133,4 +138,37 @@ public class EmployeeNarushenieServiceImpl implements EmployeeNarushenieService 
     public void deleteById(Long id) {
 
     }
+
+    // charts
+
+    @Override
+    public List<EmployeeNaruhsenie> allempln() {
+        return employeeNarushenieRepository.findAll();
+    }
+
+    @Override
+    public List<Object[]> findAllEmplNarUchastkaChartDTO(int y, int m) {
+
+        return emplUchastkaRepository.findAllEmplNarUchastkaChartDTO(y,m);
+    }
+
+    @Override
+    public List<Object[]> findAllEmplNarTsexUchastkaChartDTO(int y, int m) {
+
+        return emplUchastkaRepository.findAllEmplNarTsexUchastkaChartDTO(y,m);
+    }
+
+    @Override
+    public List<Object[]> findAllEmplNarPravilaChartDTO(int y, int m) {
+
+        return emplUchastkaRepository.findAllEmplNarPravilaChartDTO(y,m);
+    }
+
+    @Override
+    public List<Object[]> findAllEmplNarNarushenieChartDTO(int y, int m) {
+
+        return emplUchastkaRepository.findAllEmplNarnarushenieChartDTO(y,m);
+    }
+
+
 }

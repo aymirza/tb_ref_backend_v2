@@ -15,6 +15,7 @@ import java.util.Date;
 public class EmployeeNaruhsenie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="empl_narushenie_id")
     private Long empl_narushenie_id;
     private String lastname;
     private String firstname;
