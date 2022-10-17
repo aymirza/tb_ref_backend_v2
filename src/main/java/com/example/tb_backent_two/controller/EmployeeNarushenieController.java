@@ -29,11 +29,11 @@ public class EmployeeNarushenieController {
     @PostMapping(value = "/upload",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> uploadEmplNar(@RequestParam("lastname") String lastname, @RequestParam("firstname") String firstname,
                                            @RequestParam("uchastka") String uchastka, @RequestParam("tsex_uchastka") String tsex_uchastka,
-                                           @RequestParam("pravila") String pravila, @RequestParam("narushenie") String narushenie,
+                                           @RequestParam("pravila") String pravila, @RequestParam("narushenie") String narushenie, @RequestParam("date_narushenie") String date_narushenie,
                                            @RequestParam("predlojenie") String predlojenie,@RequestParam(value = "file") MultipartFile file) throws IOException {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(employeeNarushenieService.saveEmplNar(lastname, firstname, uchastka, tsex_uchastka, pravila, narushenie,predlojenie, file));
+                .body(employeeNarushenieService.saveEmplNar(lastname, firstname, uchastka, tsex_uchastka, pravila, narushenie,date_narushenie,predlojenie, file));
     }
 
 
@@ -88,6 +88,7 @@ public class EmployeeNarushenieController {
         String imgfullname = employeeNaruhsenie1.getImgfullname();
         String imgtype = employeeNaruhsenie1.getImgtype();
         String predlojenie = employeeNaruhsenie1.getPredlojenie();
+        String date_naruhsenie = employeeNaruhsenie1.getDate_narushenie();
 
         EmplNarushenieDTO emplNarushenieDTO = new EmplNarushenieDTO();
         emplNarushenieDTO.setLastname(lastname);
@@ -101,6 +102,7 @@ public class EmployeeNarushenieController {
         emplNarushenieDTO.setImgfullname(imgfullname);
         emplNarushenieDTO.setImgtype(imgtype);
         emplNarushenieDTO.setPredlojenie(predlojenie);
+        emplNarushenieDTO.setDate_narushenie(date_naruhsenie);
 
         return emplNarushenieDTO;
     }

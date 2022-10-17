@@ -17,6 +17,7 @@ public interface EmployeeNarushenieService {
                                    String tsex_uchastka,
                                    String pravila,
                                    String narushenie,
+                                   String date_narushenie,
                                    String predlojenie,
                                    MultipartFile file
     ) throws IOException;
