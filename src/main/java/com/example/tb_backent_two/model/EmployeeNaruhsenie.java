@@ -3,6 +3,7 @@ package com.example.tb_backent_two.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,8 +23,9 @@ public class EmployeeNaruhsenie {
     private String pravila;
     private String narushenie;
     private String imgurl;
-    private  String imgfullname;
-    private  String imgtype;
+    private String imgfullname;
+    private String imgtype;
+    private String date_narushenie;
     private String predlojenie;
 
 
